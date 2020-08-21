@@ -1,0 +1,47 @@
+#!/bin/bash 
+
+if [ $1 -lt 2 ] 
+then
+# DOWNLOAD MONGODB FIRST
+	
+	sudo apt-get update
+
+	sudo apt-get install -y mongodb
+
+	sudo systemctl daemon-reload 
+
+	sudo systemctl start mongodb
+
+	echo "IS MONGODB RUNNING?"
+
+	sudo systemctl status mongodb
+
+	sudo systemctl enable mongodb
+fi
+
+if [ $1 -lt 3 ] 
+then 
+	#DOWNLOAD EVERYTHING NEEDED FOR PYTHON
+	sudo apt-get install -y python3-pip
+	pip3 install --upgrade pip setuptools
+	pip3 -V
+
+fi
+if [ $1 -lt 4 ]
+then
+	#DOWNLOAD BIGCHAINDB
+
+	#FIRST DOWNGRADE PIP TO UNINSTALL PYYAML
+	sudo python3 -m pip install --force-reinstall pip==9.0.1
+	sudo pip3 install bigchaindb
+	#UPGRADE PIP TO THE CORRECT VERSION
+	sudo -H pip3 install --upgrade pip
+	bigchaindb -y configure localmongodb
+fi
+if [ $1 -lt 5 ]
+then
+	python3 config_bdb.py
+	read -p "IS THIS YOUR FIRST BIGCHAINDB NODE? [yes/no] " answer
+
+fi
+
